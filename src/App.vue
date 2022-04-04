@@ -1,13 +1,14 @@
 <template>
   <div id="app">
     <Header @searchFilm="search"/>
-    <Main :searchString="searchString"/>
+    <Main />
   </div>
 </template>
 
 <script>
 import Header from './components/Header.vue'
 import Main from './components/Main.vue'
+import axios from "axios";
 
 export default {
   name: 'App',
@@ -18,13 +19,27 @@ export default {
   data: function(){
     return {
       searchString: "",
+      filmList: [],
     }
+  },
+  created(){
+    this.getApiList(); 
   },
   methods: {
     search(stringSearch){
       console.log(stringSearch);
       this.searchString = stringSearch;
-    }
+    },
+    getApiList(){
+      axios.get("https://api.themoviedb.org/3/search/movie?api_key=c9b1c8be0be8a6b74147cc760fbd0280&query=star")
+      .then((result) => {
+        this.filmList = result.data.response;
+        console.table(this.filmList);
+      })
+      .catch((error) => {
+        console.error(error);
+      })
+    },
   }
 }
 </script>
