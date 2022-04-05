@@ -1,7 +1,7 @@
 <template>
   <div id="app">
-    <Header @searchFilm="search"/>
-    <Main />
+    <Header @newSearch="updateMovieSearch"/>
+    <Main :movies="movies"/>
   </div>
 </template>
 
@@ -18,28 +18,27 @@ export default {
   },
   data: function(){
     return {
-      searchString: "",
-      filmList: [],
+      movieSearch: "",
+      movies: [],
+      apiURL : "https://api.themoviedb.org/3/search/movie?api_key=e99307154c6dfb0b4750f6603256716d&query=",
     }
   },
-  created(){
-    this.getApiList(); 
-  },
   methods: {
-    search(stringSearch){
-      console.log(stringSearch);
-      this.searchString = stringSearch;
+    updateMovieSearch(inputString){
+      this.movieSearch = inputString;
+      this.getMovies();
     },
-    getApiList(){
-      axios.get("https://api.themoviedb.org/3/search/movie?api_key=c9b1c8be0be8a6b74147cc760fbd0280&query=star")
-      .then((result) => {
-        this.filmList = result.data.response;
-        console.table(this.filmList);
+    getMovies(){
+      axios
+      .get(this.apiURL + this.movieSearch)
+      .then((response) => {
+        console.log(response.data.results);
+        this.movies = response.data.results;
       })
       .catch((error) => {
-        console.error(error);
-      })
-    },
+        console.log(error);
+      });
+    }
   }
 }
 </script>

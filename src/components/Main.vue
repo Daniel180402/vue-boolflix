@@ -1,33 +1,24 @@
 <template>
     <main>
-        <div class="my-cards" v-for="(element, index) in newSearch(searchString)" :key="index">
-            <SingleFilm :film="film"/>
+        <div class="my-container">
+            <div class="d-flex justify-content-center">
+                <ul class="card">
+                    <li v-for="(movie, index) in movies" :key="index">
+                        <h1>{{movie.title}}</h1>
+                        <p>{{movie.original_language}}</p>
+                        <p>{{movie.vote_avarage}}</p>
+                    </li>
+                </ul>
+            </div>
         </div>
     </main>
 </template>
 
 <script>
-import SingleFilm from "./SingleFilm.vue";
 
 export default {
     name: "pageMain",
-    components: {
-        SingleFilm,
-    },
-    props: { "searchString": String},
-    data: function() {
-        return{
-            filmList: null,
-        }
-    },
-    methods: {
-        newSearch(stringToSearch){
-            console.log(stringToSearch);
-            return this.filmList.filter(
-                (element) => element.title.includes(stringToSearch)
-            );
-        }
-    }
+    props : ["movies"]
 }
 </script>
 
