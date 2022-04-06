@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <Header @newSearch="updateMovieSearch"/>
-    <Main :movies="movies"/>
+    <Main :movies="moviesSeries"/>
   </div>
 </template>
 
@@ -20,20 +20,37 @@ export default {
     return {
       movieSearch: "",
       movies: [],
-      apiURL : "https://api.themoviedb.org/3/search/movie?api_key=e99307154c6dfb0b4750f6603256716d&query=",
+      series: [],
+      moviesSeries: [],
+      apiURL : "https://api.themoviedb.org/3/search/",
+      apiKey : "?api_key=e99307154c6dfb0b4750f6603256716d&query="
     }
   },
   methods: {
     updateMovieSearch(inputString){
       this.movieSearch = inputString;
       this.getMovies();
+      this.getSeries();
     },
     getMovies(){
       axios
-      .get(this.apiURL + this.movieSearch)
+      .get(this.apiURL + "movie" + this.apiKey + this.movieSearch)
       .then((response) => {
         console.log(response.data.results);
         this.movies = response.data.results;
+        this.moviesSeries = [...this.movies, ...this.series];
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+    },
+    getSeries(){
+      axios
+      .get(this.apiURL + "tv" + this.apiKey + this.movieSearch)
+      .then((response) => {
+        console.log(response.data.results);
+        this.series = response.data.results;
+        this.moviesSeries = [...this.movies, ...this.series];
       })
       .catch((error) => {
         console.log(error);

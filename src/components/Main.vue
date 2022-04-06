@@ -6,7 +6,8 @@
                     <li v-for="(movie, index) in movies" :key="index">
                         <h1>{{movie.title}}</h1>
                         <p>{{movie.original_language}}</p>
-                        <p>{{movie.vote_avarage}}</p>
+                        <p>{{movie.vote_average}}</p>
+                        <p>{{movie.release_date}}</p>
                     </li>
                 </ul>
             </div>
